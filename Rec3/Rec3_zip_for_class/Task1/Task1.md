@@ -21,7 +21,7 @@ hello world, this is weijia sun from ece 579 cloud compuing
 
 
 ```
-![](Task1/C07BD12D-9BF1-47D5-A8F9-5B32B03C9693.png)
+![](https://github.com/FreddieSun/ECE579_CloudComputing/blob/master/Rec3/screenshots/Task1.png)
 
 
 #云计算

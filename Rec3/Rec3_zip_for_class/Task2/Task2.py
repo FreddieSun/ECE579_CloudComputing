@@ -1,6 +1,7 @@
 import math
 import numpy as np
 from pyspark import SparkContext
+
 def Simulation(sc, ncells, nsteps, nprocs, leftX=-10., rightX=+10.,sigma=3., ao=1., coeff=. 375):
     def I(x):
         return ao*math.exp(-(x**2/(2*sigma**2)))
@@ -29,4 +30,5 @@ def Simulation(sc, ncells, nsteps, nprocs, leftX=-10., rightX=+10.,sigma=3., ao=
         print 'x',i,': ',u[i]
     
 if __name__ == "__main__":
-sc = SparkContext(appName="SparkDiffusion") Simulation(sc, 100, 20, 4)
+    sc = SparkContext(appName="SparkDiffusion") 
+    Simulation(sc, 100, 20, 4)

@@ -21,7 +21,7 @@ hello world, this is weijia sun from ece 579 cloud compuing
 
 
 ```
-![](Recitation%203/C07BD12D-9BF1-47D5-A8F9-5B32B03C9693.png)
+![](https://github.com/FreddieSun/ECE579_CloudComputing/blob/master/Rec3/screenshots/Task1.png)
 
 
 # Task2
@@ -44,5 +44,3 @@ mmm-reducer continue finish the update task which may not be finished by combine
 
 I don't think combiner's code can be replaced by reducer's because combiner is not guaranteed to launch as job is busy. If replaced and one of the combiner did't work, the calculated value of mean would be wrong. A combiner should function as a optimizer to save the network transmission and shall not impact the final output. 
 
-
-#云计算

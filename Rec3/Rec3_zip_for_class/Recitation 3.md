@@ -182,5 +182,9 @@ if __name__ == "__main__":
 ```
 
 ## output
+![](https://github.com/FreddieSun/ECE579_CloudComputing/blob/master/Rec3/screenshots/Task2_result.png)
 
 ## plot 
+The change pattern is like a linear growing because the i point is always decided by the value of last time. It’s seems like a O(t) time grows.
+The change is slow because the third point is too closed to the boundary point.
+![](https://github.com/FreddieSun/ECE579_CloudComputing/blob/master/Rec3/screenshots/Task2_plot.png)

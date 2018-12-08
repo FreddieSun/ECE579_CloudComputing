@@ -44,3 +44,100 @@ mmm-reducer continue finish the update task which may not be finished by combine
 
 I don't think combiner's code can be replaced by reducer's because combiner is not guaranteed to launch as job is busy. If replaced and one of the combiner did't work, the calculated value of mean would be wrong. A combiner should function as a optimizer to save the network transmission and shall not impact the final output. 
 
+## hist-map.py
+
+```python
+#!/usr/bin/env python
+import sys
+import numpy
+
+### Prevents pipe IO errors for large files.
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE,SIG_DFL)
+###
+
+# read parameters from distributed cache - nbins, minmeanmax
+f = open('nbins','r') # read nbins file
+params = f.readline().strip().split() # read nbins file
+nbins = int(params[0]) # set maximum number of bins
+f.close()
+
+f = open('mmm','r') # open mmm file
+
+'''
+Read mmm file and assign min, max and mean values.
+File read operation in similar to above reading procedure.
+'''
+params =  f.readline().strip().split()
+xmax = float(params[1]) 
+params = f.readline().strip().split()
+xmean = float(params[1])
+params = f.readline().strip().split()
+xmin = float(params[1])
+f.close()
+
+
+
+dx = (xmax-xmin)/nbins # bin width calculation
+
+
+# compute bin centre
+#### complete this code
+for line in sys.stdin:
+    line = line.strip()
+
+    words = line.split()
+    x = float(words[0])
+    if xmax-x<=0 :
+        bn = int((x-xmin)/dx)-1
+    else:
+        bn = int((x-xmin)/dx)
+    bc = bn * dx + xmin +dx/2
+    strbc = str(bc)
+
+
+# process input data
+#### complete this code
+    print '%s\t%d' %(strbc,1);
+
+```
+
+## hist-combine-reduce.py
+```python
+#!/usr/bin/env python
+import sys
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE,SIG_DFL)
+
+count = 0
+currentKey = None
+
+#### Complete the rest of the code
+
+def updateResults(value, count): 
+    scount = value      
+    newcount = int(scount)
+    count += newcount
+    return (count)
+
+def printResults(key, count):
+    if key:
+        print '%s\t%d' % (key, count);
+
+
+for line in sys.stdin:
+    line = line.strip()
+
+    key, value = line.split('\t',1)
+    
+    if currentKey == key:
+        count = updateResults(value, count)
+       # count += int(value);
+    else:
+        printResults(currentKey, count)
+        currentKey = key;
+       # count = int(value);
+        count = updateResults(value, 0)
+
+printResults(currentKey, count)
+```

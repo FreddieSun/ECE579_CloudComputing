@@ -188,3 +188,58 @@ if __name__ == "__main__":
 The change pattern is like a linear growing because the i point is always decided by the value of last time. It’s seems like a O(t) time grows.
 The change is slow because the third point is too closed to the boundary point.
 ![](https://github.com/FreddieSun/ECE579_CloudComputing/blob/master/Rec3/screenshots/Task2_plot.png)
+
+# Task 4
+
+## code
+```python
+import re
+import datetime
+from operator import add
+from pyspark import SparkContext
+
+
+# Loads in input file. It should be in format of:
+#     URL         neighbor URL
+#     URL         neighbor URL
+#     URL         neighbor URL
+#     ...
+def computeContribs(urls, rank):
+    num_urls = len(urls)
+    for url in urls:
+        yield (url, rank / num_urls)
+
+
+def parseNeighbors(urls):
+    parts = re.split(r'\s+', urls)
+    return parts[0], parts[1]
+
+
+sc = SparkContext(appName="PageRank")
+startTime = datetime.datetime.now()
+lines = sc.textFile('pagerank.txt')
+links = lines.map(lambda urls: parseNeighbors(urls)).distinct().groupByKey().cache()
+
+ranks = links.map(lambda url_neighbors: (url_neighbors[0], 1.0))
+for iteration in range(50):
+    # Calculates URL contributions to the rank of other URLs.
+    contribs = links.join(ranks).flatMap(
+        lambda url_urls_rank: computeContribs(url_urls_rank[1][0], url_urls_rank[1][1]))
+    # Re-calculates URL ranks based on neighbor contributions.
+    ranks = contribs.reduceByKey(add).mapValues(lambda rank: rank * 0.85 + 0.15)
+endTime = datetime.datetime.now()
+for (link, rank) in ranks.collect():
+    print("%s has rank: %s." % (link, rank))
+interval = (endTime - startTime)
+print("Total time：%s " % interval)
+sc.stop()
+```
+
+
+## Q1
+Didn't find the example for this question
+
+## Q2
+After increasing the number of iterations from 5 to 50, we cannot observe any convergence or other phenomenon. The time it takes doesn’t increase with the number of iteration.
+
+## Q3

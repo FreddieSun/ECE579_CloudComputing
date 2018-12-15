@@ -1,8 +1,13 @@
 # Recitation 4
 # Task 1
 ## What does the code in PageRank.scala do? 
+The code is used to rank the web page for the follower. The result of the code shows the relationship among the followers.
 
 ## What is the convergence criteria for PageRank in the example?
+```scala
+val ranks = graph.pageRank(0.0001).vertices
+```
+This line is the convergence criteria of the PageRank in this example. When the value is smaller than 0.0001. The algorithm converges and stop.
 
 ![](Recitation%204/result.png)
 
